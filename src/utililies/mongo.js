@@ -1,16 +1,13 @@
+/* eslint-disable no-console */
 const mongoose = require('mongoose');
 
 const url = 'mongodb://localhost:27017/rectro';
 
-module.exports.connectToServer = () => {
+const dbService = () => {
   mongoose.Promise = global.Promise;
   mongoose.connect(url, { useNewUrlParser: true })
-    .then(() => {
-      // eslint-disable-next-line no-console
-      console.log('Mongo is Running');
-    })
-    .catch((error) => {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    });
+    .then(() => console.log('Mongo is Running'))
+    .catch(error => console.log(error));
 };
+
+export default dbService;

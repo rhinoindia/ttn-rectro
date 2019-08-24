@@ -1,17 +1,18 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+/* eslint-disable no-console */
+import createError from 'http-errors';
+import express from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import dbService from './utililies/mongo';
+import indexRouter from './routes/index';
+import authRouter from './routes/auth.router';
 
-const mongoConnect = require('./utililies/mongo');
-const indexRouter = require('./routes/index');
-const apiRouter = require('./routes/api');
+const logger = require('morgan');
 
 const app = express();
 
 // establish connection with mongo
-mongoConnect.connectToServer();
+dbService();
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -20,11 +21,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/api/v2', apiRouter);
+app.use('/api/v0', authRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  next(createError(404));
+  if (!req.route) next(createError(404));
 });
 
 // error handler
