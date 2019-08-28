@@ -45,7 +45,6 @@ export function ForbiddenError(err, prop) {
 ForbiddenError.prototype = Object.create(Error.prototype);
 ForbiddenError.prototype.constructor = InternalError;
 
-
 export function BadRequestError(err, prop) {
   this.statusCode = httpStatusCodes.BAD_REQUEST;
   if (err && err.message) {
@@ -61,6 +60,26 @@ export function BadRequestError(err, prop) {
 BadRequestError.prototype = Object.create(Error.prototype);
 BadRequestError.prototype.constructor = InternalError;
 
+export function UnauthorizedError(err, prop) {
+  this.statusCode = httpStatusCodes.UNAUTHORIZED;
+  if (err && err.message) {
+    this.message = err.message;
+    this.stack = err.stack;
+  } else {
+    this.message = err || 'Unauthorized user';
+    this.stack = (new Error()).stack;
+  }
+  this.property = prop;
+}
+
+export function JwtError(err) {
+  console.log('jwt error', err.message);
+  if (err.message === 'jwt expired') {
+    throw new ForbiddenError(err);
+  } else {
+    throw new UnauthorizedError(err);
+  }
+}
 
 export function send401(req, res, err) {
   res.status(httpStatusCodes.UNAUTHORIZED);
@@ -104,7 +123,13 @@ export function send200(req, res, json) {
   return res.json(json || {});
 }
 
+export function send201(req, res, json) {
+  res.status(httpStatusCodes.CREATED);
+  return res.json(json || {});
+}
+
 export function sendError(req, res, err) {
+  console.log('send error');
   if (err && err.statusCode) res.status(err.statusCode);
   return res.send(err || {});
 }
@@ -136,7 +161,7 @@ export function HandleMongoError(err) {
   if (err.name === 'MongoError' && err.code === 11000) {
     this.statusCode = httpStatusCodes.BAD_REQUEST;
     const name = err.errmsg.match(/"([^']+)"/);
-    this.message = name ? `${name[1]} is already exist` : 'There was a duplicate key error';
+    this.message = name ? `${name[1]} is already exist` : 'There was a duplicate entry';
     this.stack = (new Error()).stack;
   }
 }

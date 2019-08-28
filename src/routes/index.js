@@ -1,11 +1,23 @@
+import projectRouter from './project.router';
+
+import authRouter from './auth.router';
+
 const express = require('express');
 
-const router = express.Router();
+const indexRouter = express.Router();
 
 /* GET home page. */
-router.get('/', (req, res) => {
-  res.send('Hello Express');
-});
+indexRouter.use('/', authRouter);
+indexRouter.use('/create-project', projectRouter);
 
+// for multiple methods for single route
+function testFunction(req, res) {
+  res.send('works fine');
+  // eslint-disable-next-line no-console
+  console.log('works fine');
+}
+indexRouter.route('/test')
+  .get(testFunction)
+  .post(testFunction);
 
-module.exports = router;
+export default indexRouter;

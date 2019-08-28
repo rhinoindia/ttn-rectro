@@ -8,6 +8,8 @@ authRouter.post('/login', authController.login);
 
 authRouter.post('/signup', authController.signup);
 
+authRouter.post('/test-route', authController.test);
+
 // for multiple methods for single route
 function testFunction(req, res) {
   res.send('works fine');

@@ -3,13 +3,21 @@ import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import dbService from './utililies/mongo';
 import indexRouter from './routes/index';
-import authRouter from './routes/auth.router';
+import corsConfig from './api/middlewares/cors';
+
+const Dotenv = require('dotenv');
 
 const logger = require('morgan');
 
 const app = express();
+
+// added env valiables in process.env
+if (process.env.NODE_ENV !== 'production') Dotenv.config();
+
+app.use(cors(corsConfig));
 
 // establish connection with mongo
 dbService();
@@ -20,8 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/api/v0', authRouter);
+app.use('/api/v0', indexRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
