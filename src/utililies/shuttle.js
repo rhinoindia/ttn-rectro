@@ -59,7 +59,21 @@ Shuttle.liftSideEffectFunction = (data, callback, reqKeys) => {
     keys.forEach((key) => {
       callback(data[key], key);
     });
+  } else {
+    throw new Error('Fields are required');
   }
   console.log(data, 'dataaa');
   return data;
+};
+
+Shuttle.liftEffectArrayOfObject = (array, callback, reqKeys) => {
+  if (array.length > 0) {
+    array.forEach((obj) => {
+      Shuttle.liftSideEffectFunction(obj, callback, reqKeys);
+    });
+  } else {
+    throw new Error('Fields are required');
+  }
+  console.log(array, 'dataaa');
+  return array;
 };

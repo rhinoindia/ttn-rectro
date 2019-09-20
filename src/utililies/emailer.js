@@ -9,11 +9,6 @@ const smtpTransport = mailer.createTransport({
     pass: 'rectro@123',
   },
 });
-// clientId: '991118270319-tnhuo4bnvipmqpqgb5n8iueh09s7633o.apps.googleusercontent.com',
-// secretId: 'h6QtnQZwveIT0LQEwrocJD0J',
-// refreshToken: '1/CZ-r6NmD-amS1M4IB3tjgc-qG4-KG3YjqWzyVE9Y2bY',
-// accessToken: 'ya29.GltyB1fnB-5jZ9-PdRtzsK_Plzm_U8cd6RFo2NcJaZcqe3_a_S_P9J
-// jJFqWF2BLGOXG8JMslwDK71uxM-lhOAWPK_hM_AgK5I2pMn5D7uK02Zm-6t8uXltNCW6Gm',
 
 export const mockDAta = {
   from: 'Yashwant Chavan <from@gmail.com>',

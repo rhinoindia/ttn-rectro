@@ -67,3 +67,14 @@ export function authenticateToken(req, res, next) {
     throw new respond.UnauthorizedError();
   }
 }
+
+export function basicAuthLogin(req, res, next) {
+  if (!req.headers.authorization || req.headers.authorization.indexOf('Basic ') === -1) {
+    throw new respond.UnauthorizedError('Missing Authorization Header');
+  }
+  const base64Credentials = req.headers.authorization.split(' ')[1];
+  const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
+  const [email, password] = credentials.split(':');
+  req.body = { email, password };
+  return next();
+}

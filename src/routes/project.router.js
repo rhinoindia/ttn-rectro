@@ -4,7 +4,10 @@ import * as projectController from '../api/controllers/ProjectController';
 
 const projectRouter = express.Router();
 
-projectRouter.post('/', projectController.create);
+projectRouter.post('/create', projectController.create);
+projectRouter.get('/', projectController.getProjects);
+projectRouter.get('/:name', projectController.getProject);
+
 
 // for multiple methods for single route
 function testFunction(req, res) {
