@@ -42,7 +42,7 @@ export function generateToken(req) {
     console.log(expiresIn, 'expire in');
     const accessToken = jwt.sign(req.body, secretKey, { expiresIn });
     const refreshToken = Buffer.from(hash).toString('base64');
-    const result = { accessToken, refreshToken };
+    const result = { accessToken, refreshToken, name: req.body.name };
     return result;
   } catch (err) {
     throw new respond.InternalError(err);
@@ -58,6 +58,7 @@ export function authenticateToken(req, res, next) {
       return next();
     } catch (err) {
       if (err.message === 'jwt expired') {
+        err.message = 'token has been expired';
         throw new respond.ForbiddenError(err);
       } else {
         throw new respond.UnauthorizedError(err);

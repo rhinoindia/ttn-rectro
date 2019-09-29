@@ -1,14 +1,16 @@
 /* eslint-disable no-console */
 import mailer from 'nodemailer';
+import smtpTransport from 'nodemailer-smtp-transport';
 
 // Use Smtp Protocol to send Email
-const smtpTransport = mailer.createTransport({
+const transport = mailer.createTransport(smtpTransport({
   service: 'gmail',
+  secure: false,
   auth: {
     user: 'rectro.testing1@gmail.com',
     pass: 'rectro@123',
   },
-});
+}));
 
 export const mockDAta = {
   from: 'Yashwant Chavan <from@gmail.com>',
@@ -20,13 +22,13 @@ export const mockDAta = {
 
 export default async function sendMail(template) {
   console.log(template, 'emailer data');
-  smtpTransport.sendMail(template, (error, response) => {
+  transport.sendMail(template, (error, response) => {
     if (error) {
       console.log(error);
     } else {
       console.log(`Message sent: ${response.message}`);
     }
 
-    smtpTransport.close();
+    transport.close();
   });
 }

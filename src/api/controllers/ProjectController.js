@@ -34,7 +34,7 @@ export function getProject(req, res, next) {
   const { name } = req.params;
   return Promise.resolve(Shuttle.liftRequest(req))
     .then(() => authenticateToken(req, res, next))
-    .then(() => ProjectService.getProject(name, res, next))
+    .then(() => ProjectService.getProject(name, req))
     .then(data => respond.send200(req, res, data))
     .catch(err => respond.sendError(req, res, err));
 }

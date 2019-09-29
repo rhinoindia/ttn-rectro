@@ -27,9 +27,14 @@ export async function getProjects(req) {
   return Projects.find({ $or: [{ userEmail: email }, { members: { email } }] })
     .then((projects) => {
       const result = projects.map((project) => {
-        const { name } = project;
         const isMember = project.userEmail !== email;
-        const obj = { name, isMember };
+        const obj = {
+          name: project.name,
+          boards: project.boards,
+          members: project.members,
+          created_at: project.created_at,
+          isMember,
+        };
         return obj;
       });
       console.log(result, 'result');
@@ -40,9 +45,19 @@ export async function getProjects(req) {
     });
 }
 
-export async function getProject(name) {
-  return Projects.findOne({ name }).populate('boards', 'name')
-    .then(project => project)
+export async function getProject(name, req) {
+  const { email } = req.jwt;
+  return Projects.findOne({ name }).populate('boards', ['comments', 'name', 'created_at'])
+    .then((project) => {
+      const isMember = project.userEmail !== email;
+      const obj = {
+        name: project.name,
+        boards: project.boards,
+        members: project.members,
+        isMember,
+      };
+      return obj;
+    })
     .catch((err) => {
       throw new respond.InternalError(err);
     });

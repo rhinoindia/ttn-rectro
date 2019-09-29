@@ -6,9 +6,7 @@ import * as UserService from '../services/UserService';
 import * as auth from '../middlewares/authentication';
 
 export function login(req, res, next) {
-  // const validation = ['email', 'password'];
   return Promise.resolve(Shuttle.liftData(req.body))
-    // .then(data => Shuttle.liftSideEffectFunction(data, required, validation))
     .then(() => auth.basicAuthLogin(req, res, next))
     .then(() => auth.ispasswordAndUserMatch(req, res, next))
     .then(() => auth.generateToken(req, res, next))
