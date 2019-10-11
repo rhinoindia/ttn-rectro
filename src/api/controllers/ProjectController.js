@@ -1,12 +1,10 @@
 /* eslint-disable no-console */
-// import * as validator from '../../utililies/validation';
 import Shuttle from '../../utililies/shuttle';
 import * as respond from '../../utililies/respond';
 import * as ProjectService from '../services/ProjectService';
-import * as UserService from '../services/UserService';
+// import * as UserService from '../services/UserService';
 import { authenticateToken } from '../middlewares/authentication';
 import { required } from '../../utililies/validation';
-// import { addMember } from '../../utililies/helpers';
 
 export function create(req, res, next) {
   const validationMember = ['email'];
@@ -16,7 +14,7 @@ export function create(req, res, next) {
     .then(() => authenticateToken(req, res, next))
     .then(() => Shuttle.liftSideEffectFunction(req.body, required, validationProject))
     .then(() => Shuttle.liftEffectArrayOfObject(members, required, validationMember))
-    .then(() => UserService.addMembers(members))
+    // .then(() => UserService.addMembers(members))
     .then(() => ProjectService.add(req, res, next))
     .then(data => respond.send200(req, res, data))
     .catch(err => respond.sendError(req, res, err));

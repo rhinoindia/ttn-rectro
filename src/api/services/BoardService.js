@@ -44,9 +44,10 @@ export function add(req) {
 
 export async function addComments(req) {
   const { columnId, message, boardId } = req.body;
+  const { email } = req.jwt;
   const Board = await findById(boardId);
   if (Board) {
-    const reqData = { columnId, message };
+    const reqData = { columnId, message, email };
     Board.comments.push(reqData);
     Board.save();
   }
@@ -63,4 +64,11 @@ export async function updateComments(req) {
 export async function get(name) {
   const Board = await getByName(name);
   return Board;
+}
+
+export async function deleteComment(req) {
+  const { boardId, commentId } = req.body;
+  return Boards.updateOne({ _id: boardId }, { $pull: { comments: { _id: commentId } } })
+    .then(result => result)
+    .catch((error) => { throw new respond.BadRequestError(error); });
 }

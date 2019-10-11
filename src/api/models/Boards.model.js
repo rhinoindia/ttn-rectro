@@ -11,6 +11,7 @@ const BoardSchema = new Schema({
     columnId: { type: Schema.Types.ObjectId, required: true },
     message: { type: String, required: true },
     upvote: { type: Number },
+    email: { type: String },
   }],
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },

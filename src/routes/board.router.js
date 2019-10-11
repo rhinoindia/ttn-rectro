@@ -6,7 +6,8 @@ const boardRouter = express.Router();
 
 boardRouter.post('/create', BoardController.createBoard);
 boardRouter.post('/comment', BoardController.createComment);
-boardRouter.post('/comment/update', BoardController.updateComment);
+boardRouter.put('/comment/update', BoardController.updateComment);
+boardRouter.delete('/comment/delete', BoardController.deleteComment);
 boardRouter.get('/:name', BoardController.getBoard);
 
 // for multiple methods for single route

@@ -58,7 +58,7 @@ export function authenticateToken(req, res, next) {
       return next();
     } catch (err) {
       if (err.message === 'jwt expired') {
-        err.message = 'token has been expired';
+        err.message = 'Session has been expired';
         throw new respond.ForbiddenError(err);
       } else {
         throw new respond.UnauthorizedError(err);
